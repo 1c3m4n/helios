@@ -7,14 +7,20 @@
     <script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/controllers.js"></script>
 	<script type="text/javascript" src="js/services.js"></script>
-
+		<link rel="stylesheet" type="text/css" href="styles/main.css"/>
 </head>
 <body ng-controller="readerController">
 	 <p>{{rawr}}</p>
-	 <ul >
-        <li ng-repeat="UserFeed in UserFeeds">
+	 <div class="leftmenu">
+	 <ul class="feedlist">
+        <li ng-repeat="UserFeed in UserFeeds" class="feeditem">
           <span >{{UserFeed.FeedName}}</span>
         </li>
       </ul>
+      </div>
+<div class="content">
+	
+</div>
+
 </body>
 </html>

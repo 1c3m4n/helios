@@ -1,0 +1,26 @@
+body{
+	font-family: Verdana;
+}
+
+.leftmenu{
+	position: absolute;
+	width: 200px;
+	left:0px;
+	top:0px;
+	background-color: #ccc;
+	min-height: 600px;
+}
+
+.feedlist
+{
+	font-size: 0.7em;
+	font-weight: bold;
+	padding-top: 20px;
+	list-style: none;
+
+}
+
+.feeditem
+{
+	cursor:pointer;
+}

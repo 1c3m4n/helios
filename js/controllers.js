@@ -6,7 +6,7 @@ function readerController($scope,$http,UserFeedBind)
     	isArray:true
     }).success(function(data, status, headers, config) {
     	$scope.UserFeeds = data;
-		$scope.rawr = status;
+		  $scope.rawr = status;
   	}).error(function(data, status, headers, config) {
     	$scope.rawr = status;
   	});
