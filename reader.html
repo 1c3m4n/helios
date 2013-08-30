@@ -10,17 +10,25 @@
 		<link rel="stylesheet" type="text/css" href="styles/main.css"/>
 </head>
 <body ng-controller="readerController">
-	 <p>{{rawr}}</p>
-	 <div class="leftmenu">
-	 <ul class="feedlist">
-        <li ng-repeat="UserFeed in UserFeeds" class="feeditem">
-          <span >{{UserFeed.FeedName}}</span>
-        </li>
-      </ul>
-      </div>
-<div class="content">
-	
-</div>
 
+	 <div class="leftmenu">
+	 	<ul class="feedlist">
+	 		<li ng-click="loadAll()">All</li>
+	 		<li ng-click="loadToday()">Today</li>
+	 		<li ng-click="loadFriends()">Friends</li>
+	 		<li ng-click="loadLiked()">Liked</li>
+	 		<li ng-click="loadShared()">Shared</li>
+	 		<li ng-click="loadPopular()">Popular</li>
+	 	</ul>
+	 	<ul class="feedlist">
+        	<li ng-repeat="UserFeed in UserFeeds" ng-click="loadFeed(UserFeed)">
+          	<span >{{UserFeed.FeedName}}</span>
+        	</li>
+      	</ul>
+    </div>
+	<div class="content">
+		<div class="header"><h1 class="FeedTitle">{{Title}}</h1></div>
+		<div class="feedcontent">{{Content}}</div>
+	</div>
 </body>
 </html>

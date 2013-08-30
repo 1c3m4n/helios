@@ -32,7 +32,7 @@ type UserFeed struct {
 	LastFeedItemHash string
 }
 
-type UserUnreadFeed struct {
+type UserUnreadFeedItem struct {
 	EmailHash string
 	FeedHash  string
 	ItemUrl   string
@@ -97,16 +97,23 @@ func CreateUserFeed(userfeed UserFeed) {
 	return
 }
 
-func (serv ReaderService) GetUserUnreadFeeds(emailhash string) (userunreadfeeds []UserUnreadFeed) {
+func (serv ReaderService) GetUserUnreadFeeds(emailhash string) (userunreadfeeditems []UserUnreadFeedItem) {
 	ExecuteWithCollection("rss", "userunreadfeeds", func(c *mgo.Collection) error {
-		return c.Find(bson.M{"emailhash": emailhash}).All(&userunreadfeeds)
+		return c.Find(bson.M{"emailhash": emailhash}).All(&userunreadfeeditems)
 	})
 	return
 }
 
-func CreateUserUnreadFeed(userunreadfeed UserUnreadFeed) {
+func (serv ReaderService) GetUserUnreadFeedsItemsByFeed(emailhash string, feedhash string) (userunreadfeeditems []UserUnreadFeedItem) {
 	ExecuteWithCollection("rss", "userunreadfeeds", func(c *mgo.Collection) error {
-		return c.Insert(userunreadfeed)
+		return c.Find(bson.M{"emailhash": emailhash, "feedhash": feedhash}).All(&userunreadfeeditems)
+	})
+	return
+}
+
+func CreateUserUnreadFeed(userunreadfeeditem UserUnreadFeedItem) {
+	ExecuteWithCollection("rss", "userunreadfeeds", func(c *mgo.Collection) error {
+		return c.Insert(userunreadfeeditem)
 	})
 	return
 }
@@ -160,10 +167,10 @@ func (serv ReaderService) DoOptions(varArgs ...string) {
 type ReaderService struct {
 	gorest.RestService `root:"/UserFeed" consumes:"application/json" produces:"application/json"`
 
-	doOptions    gorest.EndPoint `method:"OPTIONS"	path:"/{...:string}"`
-	addUserFeed  gorest.EndPoint `method:"POST" 	    path:"/"							postdata:"NewFeed"`
-	getUserFeeds gorest.EndPoint `method:"GET" 		path:"/{emailhash:string}" 			output:"[]UserFeed"`
-	//getUserUnreadFeeds gorest.EndPoint `method:"GET" 		path:"/UserUnreadFeed/{emailhash:string}" 	output:"[]UserUnreadFeed"`
+	doOptions                     gorest.EndPoint `method:"OPTIONS"		path:"/{...:string}"`
+	addUserFeed                   gorest.EndPoint `method:"POST" 	    path:"/"							postdata:"NewFeed"`
+	getUserFeeds                  gorest.EndPoint `method:"GET" 		path:"/{emailhash:string}" 			output:"[]UserFeed"`
+	getUserUnreadFeedsItemsByFeed gorest.EndPoint `method:"GET" 		path:"/UserUnreadFeed/{emailhash:string}/{feedhash:string}" 	output:"[]UserUnreadFeedItem"`
 }
 
 func main() {
