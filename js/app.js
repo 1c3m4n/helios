@@ -1,3 +1,3 @@
-var reader = angular.module('readerapp',['readerService']);
+var reader = angular.module('readerapp',['FeedService','UnreadService']);
 
 

@@ -104,6 +104,13 @@ func (serv ReaderService) GetUserUnreadFeeds(emailhash string) (userunreadfeedit
 	return
 }
 
+func (serv ReaderService) GetUserUnreadFeedsItems(emailhash string) (userunreadfeeditems []UserUnreadFeedItem) {
+	ExecuteWithCollection("rss", "userunreadfeeds", func(c *mgo.Collection) error {
+		return c.Find(bson.M{"emailhash": emailhash}).All(&userunreadfeeditems)
+	})
+	return
+}
+
 func (serv ReaderService) GetUserUnreadFeedsItemsByFeed(emailhash string, feedhash string) (userunreadfeeditems []UserUnreadFeedItem) {
 	ExecuteWithCollection("rss", "userunreadfeeds", func(c *mgo.Collection) error {
 		return c.Find(bson.M{"emailhash": emailhash, "feedhash": feedhash}).All(&userunreadfeeditems)
@@ -170,6 +177,7 @@ type ReaderService struct {
 	doOptions                     gorest.EndPoint `method:"OPTIONS"		path:"/{...:string}"`
 	addUserFeed                   gorest.EndPoint `method:"POST" 	    path:"/"							postdata:"NewFeed"`
 	getUserFeeds                  gorest.EndPoint `method:"GET" 		path:"/{emailhash:string}" 			output:"[]UserFeed"`
+	getUserUnreadFeedsItems       gorest.EndPoint `method:"GET" 		path:"/UserUnreadFeed/{emailhash:string}/" 	output:"[]UserUnreadFeedItem"`
 	getUserUnreadFeedsItemsByFeed gorest.EndPoint `method:"GET" 		path:"/UserUnreadFeed/{emailhash:string}/{feedhash:string}" 	output:"[]UserUnreadFeedItem"`
 }
 

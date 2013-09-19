@@ -1,19 +1,15 @@
-function readerController($scope,$http,UserFeedBind)
+function readerController($scope,$http,UserFeedBind,UserUnreadFeedBind)
 {
-    $http({ 
-    	method: 'GET', 
-    	url: 'http://localhost:9090/UserFeed/_NozVwtdndMkCeguF6a70ao6mI7GKbrF8mtHc-8r7bI=',
-    	isArray:true
-    }).success(function(data, status, headers, config) {
-    	$scope.UserFeeds = data;
-		  $scope.rawr = status;
-  	}).error(function(data, status, headers, config) {
-    	$scope.rawr = status;
-  	});
+    $scope.UserFeeds = UserFeedBind.query({emailhash:'_NozVwtdndMkCeguF6a70ao6mI7GKbrF8mtHc-8r7bI='});
+    $scope.Title = "All"
+    $scope.Content = "All User Feed Items"
+    $scope.FeedData = UserUnreadFeedBind.queryfeed({emailhash:'_NozVwtdndMkCeguF6a70ao6mI7GKbrF8mtHc-8r7bI='});
+    
 
-$scope.loadFeed= function(userfeed) {
+    $scope.loadFeed= function(userfeed) {
         $scope.Title = userfeed.FeedName
-        $scope.Content = "Selected User Feed Items"
+        $scope.Content = "Selected User Feed Items " + userfeed.FeedHash;
+        $scope.FeedData = UserUnreadFeedBind.queryfeed({emailhash:'_NozVwtdndMkCeguF6a70ao6mI7GKbrF8mtHc-8r7bI=',feedhash:userfeed.FeedHash});
     }
     $scope.loadAll = function() {
         $scope.Title = "All"
