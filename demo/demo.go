@@ -152,7 +152,8 @@ func (serv ReaderService) AddUserFeed(newfeed NewFeed) {
 	fmt.Printf("Response from %s : %s \n", newfeed.Url, resp.Status)
 	if resp.Status == "200 OK" {
 		feedhash := HashEncode(newfeed.Url)
-		feed := Feed{feedhash, "", newfeed.Url, time.Now()}
+		fmt.Println(resp.Header)
+		feed := Feed{feedhash, newfeed.FeedName, newfeed.Url, time.Now()}
 		CreateFeed(feed)
 		userfeed := UserFeed{newfeed.EmailHash, newfeed.FeedName, feedhash, ""}
 		CreateUserFeed(userfeed)
